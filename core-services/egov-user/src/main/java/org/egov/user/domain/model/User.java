@@ -86,6 +86,8 @@ public class User {
     private boolean mobileValidationMandatory = true;
     private String alternateMobileNumber;
     private Object additionalDetails;
+    private String officeCode;
+    private Long naaUserId;
 
     public User addAddressItem(Address addressItem) {
         if (this.addresses == null) {

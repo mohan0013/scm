@@ -67,8 +67,10 @@ public class UserTypeQueryBuilder {
             "addr_type, addr .address as addr_address,  addr.city as addr_city, addr.pincode as addr_pincode, addr" +
             ".tenantid as " +
             "addr_tenantid, addr.userid as addr_userid, addr.additionaldetails addrAdditionaldetails, ur.role_code as role_code, ur.role_tenantid as role_tenantid \n" +
+            "ofc.office_id, ofc.NAA_code as naa_user_id "+
             "\tFROM eg_user userdata LEFT OUTER JOIN eg_user_address addr ON userdata.id = addr.userid AND userdata.tenantid = addr" +
-            ".tenantid LEFT OUTER JOIN eg_userrole_v1 ur ON userdata.id = ur.user_id AND userdata.tenantid = ur.user_tenantid  ";
+            ".tenantid LEFT OUTER JOIN eg_userrole_v1 ur ON userdata.id = ur.user_id AND userdata.tenantid = ur.user_tenantid  "+
+            "LEFT OUTER JOIN eg_user_office_map ofc ON ofc.user_id=userdata.id and ofc.active=true ";
 
     private static final String PAGINATION_WRAPPER = "SELECT * FROM " +
             "(SELECT *, DENSE_RANK() OVER (ORDER BY id) offset_ FROM " +
