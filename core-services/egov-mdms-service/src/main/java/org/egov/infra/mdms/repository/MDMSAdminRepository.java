@@ -2,16 +2,23 @@ package org.egov.infra.mdms.repository;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import org.egov.infra.mdms.dto.Office;
 import org.egov.infra.mdms.dto.Organization;
 import org.egov.infra.mdms.model.EntityRequest;
+import org.egov.infra.mdms.model.OfficeSearchCriteria;
+import org.egov.infra.mdms.model.OrganizationSearchCriteria;
 import org.egov.infra.mdms.repository.rowMapper.OfficeResultExtractor;
 import org.egov.infra.mdms.repository.rowMapper.OrganizationResultExtractor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -28,15 +35,69 @@ public class MDMSAdminRepository {
 	@Autowired
 	private OfficeResultExtractor officeResultExtractor;
 
-	public List<Organization> fetchOrganization() {
-		String query = "select id, code, name, description, hod, email_id, telephone_number, address, district, sub_district, state, pin, status from eg_organizations";
-		List<Organization> organizations = jdbcTemplate.query(query, organizationResultExtractor);
+	public List<Organization> fetchOrganization(OrganizationSearchCriteria criteria) {
+		StringBuilder searchQuery = new StringBuilder("select id, code, name, description, hod, email_id, telephone_number, address, district, sub_district, state, pin, status from eg_organizations");
+		List<Object> paramList = new ArrayList<>();
+		if(criteria!= null && !StringUtils.isEmpty(criteria.getCodes())) {
+			searchQuery.append(addWhereOrAndClause(paramList));
+			searchQuery.append(" code in ( ").append(getQueryForCollection(criteria.getCodes(), paramList)).append(" )");
+		}
+		
+		if(criteria!= null && !ObjectUtils.isEmpty(criteria.getId())) {
+			searchQuery.append(addWhereOrAndClause(paramList));
+			searchQuery.append(" id = ?");
+			paramList.add(criteria.getId());
+		}
+		
+		if(criteria!= null && !StringUtils.isEmpty(criteria.getStatus())) {
+			searchQuery.append(addWhereOrAndClause(paramList));
+			searchQuery.append(" status = ?");
+			paramList.add(criteria.getStatus());
+		}
+		
+		List<Organization> organizations = jdbcTemplate.query(searchQuery.toString(), paramList.toArray(), organizationResultExtractor);
+		
 		return organizations;
 	}
 
-	public List<Office> fetchOffice() {
-		String query = "select id, code, organization_id, name, description, email_id, telephone_number, office_address, district, sub_district, state, pin, status, Head_office_code, Head_office from eg_offices";
-		List<Office> offices = jdbcTemplate.query(query, officeResultExtractor);
+	public List<Office> fetchOffice(OfficeSearchCriteria criteria) {
+		StringBuilder searchQuery = new StringBuilder("select id, code, organization_id, name, description, email_id, telephone_number, office_address, district, sub_district, state, pin, status, Head_office_code, Head_office from eg_offices");
+		List<Object> paramList = new ArrayList<>();
+		if(criteria!= null && !CollectionUtils.isEmpty(criteria.getCodes())) {
+			searchQuery.append(addWhereOrAndClause(paramList));
+			searchQuery.append(" code in (").append(getQueryForCollection(criteria.getCodes(), paramList)).append(" )");;
+		}
+		
+		if(criteria!= null && !ObjectUtils.isEmpty(criteria.getId())) {
+			searchQuery.append(addWhereOrAndClause(paramList));
+			searchQuery.append(" id = ?");
+			paramList.add(criteria.getId());
+		}
+		
+		if(criteria!= null && !StringUtils.isEmpty(criteria.getStatus())) {
+			searchQuery.append(addWhereOrAndClause(paramList));
+			searchQuery.append(" status = ?");
+			paramList.add(criteria.getStatus());
+		}
+		
+		if(criteria!= null && !StringUtils.isEmpty(criteria.getHeadOfficeCode())) {
+			searchQuery.append(addWhereOrAndClause(paramList));
+			searchQuery.append(" head_office_code = ?");
+			paramList.add(criteria.getHeadOfficeCode());
+		}
+		
+		if(criteria!= null && !ObjectUtils.isEmpty(criteria.getOrganizationId())) {
+			searchQuery.append(addWhereOrAndClause(paramList));
+			searchQuery.append(" organization_id = ?");
+			paramList.add(criteria.getOrganizationId());
+		}
+		
+		searchQuery.append(addWhereOrAndClause(paramList));
+		searchQuery.append(" head_office = ?");
+		paramList.add(criteria.isHeadOffice());
+		
+		List<Office> offices = jdbcTemplate.query(searchQuery.toString(), paramList.toArray(), officeResultExtractor);
+		
 		return offices;
 	}
 
@@ -173,5 +234,26 @@ public class MDMSAdminRepository {
 		});
 
 	}
+
+	public String addWhereOrAndClause(List<Object> paramList) {
+		if(paramList.isEmpty()) {
+			return " where ";
+		} else {
+			return " and ";
+		}
+	}
+	
+	private String getQueryForCollection(List<?> ids, List<Object> preparedStmtList) {
+        StringBuilder builder = new StringBuilder();
+        Iterator<?> iterator = ids.iterator();
+        while (iterator.hasNext()) {
+            builder.append(" ?");
+            preparedStmtList.add(iterator.next());
+
+            if (iterator.hasNext())
+                builder.append(",");
+        }
+        return builder.toString();
+    }
 
 }
