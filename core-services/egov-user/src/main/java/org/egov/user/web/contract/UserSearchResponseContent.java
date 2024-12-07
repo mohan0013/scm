@@ -69,6 +69,9 @@ public class UserSearchResponseContent {
     private Date pwdExpiryDate;
     
     private Object additionalDetails;
+    
+    private String officeCode;
+    private Long naaUserId;
 
     public UserSearchResponseContent(User user) {
 
@@ -105,6 +108,8 @@ public class UserSearchResponseContent {
         this.addresses = user.getAddresses();
         this.alternatemobilenumber=user.getAlternateMobileNumber();
         this.additionalDetails = user.getAdditionalDetails();
+        this.officeCode = user.getOfficeCode();
+        this.naaUserId = user.getNaaUserId();
         mapPermanentAddress(user);
         mapCorrespondenceAddress(user);
     }
