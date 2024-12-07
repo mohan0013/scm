@@ -58,5 +58,7 @@ public class HRMSConstants {
 	public static final String INTERNALMICROSERVICEUSER_MOBILENO = "9999999999";
 
 	public static final String INTERNALMICROSERVICEUSER_TYPE = "SYSTEM";
+	
+	public static final String ROLE_SUB_NODAL_APELLATE_AUTHORITY = "SUB_NAA";
 
 }
