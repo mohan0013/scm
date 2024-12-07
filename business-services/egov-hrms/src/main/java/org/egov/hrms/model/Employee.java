@@ -128,6 +128,7 @@ public class Employee {
     @Valid
     @NotNull
     private User user;
-
+    
+    private Office office;
 
 }

@@ -120,6 +120,7 @@ public class EmployeeService {
 		employeeRequest.getEmployees().stream().forEach(employee -> {
 			enrichCreateRequest(employee, requestInfo);
 			createUser(employee, requestInfo);
+			enrichOfficeMapping(employee);
 			pwdMap.put(employee.getUuid(), employee.getUser().getPassword());
 			employee.getUser().setPassword(null);
 		});
@@ -128,6 +129,16 @@ public class EmployeeService {
 		return generateResponse(employeeRequest);
 	}
 	
+	private void enrichOfficeMapping(Employee employee) {
+		employee.getOffice().setUserId(employee.getId());
+		employee.getOffice().setActive(true);
+		
+		/* If Sub NAA user then his parent NAA user preserve or set to null*/
+		if(employee.getUser().getRoles().stream().anyMatch(role -> role.getCode().equals(HRMSConstants.ROLE_SUB_NODAL_APELLATE_AUTHORITY))) {
+			employee.getOffice().setNaaUserId(null);
+		}
+	}
+
 	/**
 	 * Searches employees on a given criteria.
 	 * 
@@ -318,8 +329,13 @@ public class EmployeeService {
 				document.setAuditDetails(auditDetails);
 			});
 		}
+		if(employee.getOffice() != null) {
+			employee.getOffice().setAuditDetails(auditDetails);
+		}
+			
 		employee.setAuditDetails(auditDetails);
 		employee.setIsActive(true);
+		employee.getOffice().setNaaUserId(requestInfo.getUserInfo().getId());
 	}
 	
 	/**
