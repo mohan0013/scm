@@ -21,13 +21,12 @@ import lombok.Setter;
 public class OfficeSearchCriteria {
 	@JsonProperty("RequestInfo")
 	private RequestInfo requestInfo;
+	private String tenantId;
 	
 	private Long id;
 	private Long organizationId;
 	private List<String> codes;
 	private String HeadOfficeCode;
 	private String status;
-	
-	@Default
-	private boolean headOffice=true;
+	private boolean headOffice;
 }

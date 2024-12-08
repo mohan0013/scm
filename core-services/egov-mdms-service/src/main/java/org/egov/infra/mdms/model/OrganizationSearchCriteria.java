@@ -22,6 +22,8 @@ public class OrganizationSearchCriteria {
 	@JsonProperty("RequestInfo")
 	private RequestInfo requestInfo;
 	
+	private String tenantId;
+	
 	private Long id;
 	
 	private List<String> codes;
