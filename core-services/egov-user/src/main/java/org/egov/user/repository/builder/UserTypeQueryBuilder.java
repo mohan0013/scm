@@ -64,9 +64,8 @@ public class UserTypeQueryBuilder {
             ".lastmodifieddate,  userdata.createdby, userdata.lastmodifiedby, userdata.active, userdata.name, userdata.gender, userdata.pan, userdata.aadhaarnumber, userdata" +
             ".type,  userdata.version, userdata.guardian, userdata.guardianrelation, userdata.signature, userdata.accountlocked, userdata.accountlockeddate, userdata" +
             ".bloodgroup, userdata.photo, userdata.identificationmark,  userdata.tenantid, userdata.id, userdata.uuid, userdata.alternatemobilenumber, userdata.additionaldetails, addr.id as addr_id, addr.type as " +
-            "addr_type, addr .address as addr_address,  addr.city as addr_city, addr.pincode as addr_pincode, addr" +
-            ".tenantid as " +
-            "addr_tenantid, addr.userid as addr_userid, addr.additionaldetails addrAdditionaldetails, ur.role_code as role_code, ur.role_tenantid as role_tenantid " +
+            "addr_type, addr .address as addr_address,  addr.city as addr_city, addr.pincode as addr_pincode, addr.tenantid as " +
+            "addr_tenantid, addr.userid as addr_userid, addr.additionaldetails addrAdditionaldetails, ur.role_code as role_code, ur.role_tenantid as role_tenantid, " +
             "ofc.office_id, ofc.NAA_code as naa_user_id "+
             "FROM eg_user userdata LEFT OUTER JOIN eg_user_address addr ON userdata.id = addr.userid AND userdata.tenantid = addr" +
             ".tenantid LEFT OUTER JOIN eg_userrole_v1 ur ON userdata.id = ur.user_id AND userdata.tenantid = ur.user_tenantid  "+
