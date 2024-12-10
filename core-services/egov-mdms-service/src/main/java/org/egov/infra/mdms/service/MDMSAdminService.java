@@ -64,12 +64,10 @@ public class MDMSAdminService {
 	public EntityResponse update(String entity, EntityRequest request) {
 		EntityResponse response;
 		if(entity.equalsIgnoreCase(MDMSConstants.ORGANIZATION)) {
-			validateOrganization(request);
 			adminRepository.updateOrganization(request);
 			response = EntityResponse.builder().responseInfo(factory.createResponseInfoFromRequestInfo(request.getRequestInfo(), true))
 					.organizations(request.getOrganizations()).build();
 		} else if(entity.equalsIgnoreCase(MDMSConstants.OFFICE)) {
-			validateOffice(request);
 			adminRepository.updateOffice(request);
 			response = EntityResponse.builder().responseInfo(factory.createResponseInfoFromRequestInfo(request.getRequestInfo(), true))
 					.offices(request.getOffices()).build();
