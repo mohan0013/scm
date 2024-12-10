@@ -136,11 +136,19 @@ public class UserService {
 //                .build();
     	UserSearchCriteria userSearchCriteria;
     	if(otpLogin) {
-    		userSearchCriteria = UserSearchCriteria.builder()
-                    .mobileNumber(userName)
-                    .tenantId(getStateLevelTenantForCitizen(tenantId, userType))
-                    .type(userType)
-                    .build();
+    		if(userName.contains("@")) {
+    			userSearchCriteria = UserSearchCriteria.builder()
+	                    .emailId(userName)
+	                    .tenantId(getStateLevelTenantForCitizen(tenantId, userType))
+	                    .type(userType)
+	                    .build();
+    		} else {
+	    		userSearchCriteria = UserSearchCriteria.builder()
+	                    .mobileNumber(userName)
+	                    .tenantId(getStateLevelTenantForCitizen(tenantId, userType))
+	                    .type(userType)
+	                    .build();
+    		}
     	} else {
     		userSearchCriteria = UserSearchCriteria.builder()
                     .userName(userName)
