@@ -49,6 +49,7 @@ import org.egov.common.contract.response.ResponseInfo;
 import org.egov.hrms.config.PropertiesManager;
 import org.egov.hrms.model.AuditDetails;
 import org.egov.hrms.model.Employee;
+import org.egov.hrms.model.Office;
 import org.egov.hrms.model.enums.UserType;
 import org.egov.hrms.producer.HRMSProducer;
 import org.egov.hrms.repository.EmployeeRepository;
@@ -335,7 +336,8 @@ public class EmployeeService {
 			
 		employee.setAuditDetails(auditDetails);
 		employee.setIsActive(true);
-		employee.getOffice().setNaaUserId(requestInfo.getUserInfo().getId());
+		
+		employee.setOffice(Office.builder().naaUserId(requestInfo.getUserInfo().getId()).build());
 	}
 	
 	/**
