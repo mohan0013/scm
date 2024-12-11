@@ -87,11 +87,15 @@ public class MdmsRepository {
         MdmsCriteriaReq mcq = new MdmsCriteriaReq();
         mcq.setRequestInfo(requestInfo);
         mcq.setMdmsCriteria(mc);
+        
+        log.info("url: "+url);
+        log.info(mcq.toString());
 
         @SuppressWarnings("unchecked")
         Map<String, Map<String, List>> response = (Map<String, Map<String, List>>) restTemplate.postForObject(url, mcq,
                 Map.class).get("MdmsRes");
 
+        log.info(response.toString());
         if(isNull(response.get(roleActionModule)) || isNull(response.get(roleActionModule).get(roleActionMaster))
                 || isNull(response.get(actionModule)) || isNull(response.get(actionModule).get(actionMaster)))
             throw new CustomException("DATA_NOT_AVAILABLE", "Data not available for this tenant");
