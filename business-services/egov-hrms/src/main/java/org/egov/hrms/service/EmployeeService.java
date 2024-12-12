@@ -135,7 +135,7 @@ public class EmployeeService {
 		employee.getOffice().setActive(true);
 		
 		/* If Sub NAA user then his parent NAA user preserve or set to null*/
-		if(employee.getUser().getRoles().stream().anyMatch(role -> role.getCode().equals(HRMSConstants.ROLE_SUB_NODAL_APELLATE_AUTHORITY))) {
+		if(!employee.getUser().getRoles().stream().anyMatch(role -> role.getCode().equals(HRMSConstants.ROLE_SUB_NODAL_APELLATE_AUTHORITY))) {
 			employee.getOffice().setNaaUserId(null);
 		}
 	}
@@ -330,14 +330,11 @@ public class EmployeeService {
 				document.setAuditDetails(auditDetails);
 			});
 		}
-		if(employee.getOffice() != null) {
-			employee.getOffice().setAuditDetails(auditDetails);
-		}
 			
 		employee.setAuditDetails(auditDetails);
 		employee.setIsActive(true);
 		
-		employee.setOffice(Office.builder().naaUserId(requestInfo.getUserInfo().getId()).build());
+		employee.setOffice(Office.builder().naaUserId(requestInfo.getUserInfo().getId()).auditDetails(auditDetails).build());
 	}
 	
 	/**
