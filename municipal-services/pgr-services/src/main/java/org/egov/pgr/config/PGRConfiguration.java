@@ -221,6 +221,16 @@ public class PGRConfiguration {
 
     @Value("${is.environment.central.instance}")
     private Boolean isEnvironmentCentralInstance;
+    
+    @Value("${appeal.kafka.create.topic}")
+    private String createAppealTopic;
+    
+    @Value("${appeal.kafka.update.topic}")
+    private String updateAppealTopic;
+    
+    @Value("${egov.idgen.appeal.serviceRequestId.name}")
+    private String appealFormatName;
 
-
+    @Value("${egov.idgen.appeal.serviceRequestId.format}")
+    private String appealFormat;
 }

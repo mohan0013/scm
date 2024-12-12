@@ -11,11 +11,9 @@
     "packages/modules/core",
     "packages/modules/dss",
     "packages/modules/engagement",
-    "packages/modules/pgr",
-    "packages/modules/pt",
-    "packages/modules/tl",
-    "packages/modules/fsm",
-    "packages/modules/ws"
+    "packages/modules/hrms",
+    "packages/modules/pt"
+
   ],
   "author": "Abhinav Kushwaha <abhinav.kushwaha@egovernments.org>",
   "license": "MIT",
@@ -89,6 +87,7 @@
     "**/babel-loader": "8.2.2",
     "**/@babel/core": "7.14.0",
     "**/@babel/preset-env": "7.14.0",
+    "**/styled-components": "5.0.0",
     "**/@babel/plugin-transform-modules-commonjs": "7.14.0"
   }
 }

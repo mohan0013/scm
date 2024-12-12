@@ -10,11 +10,9 @@
     "micro-ui-internals/packages/modules/core",
     "micro-ui-internals/packages/modules/dss",
     "micro-ui-internals/packages/modules/engagement",
-    "micro-ui-internals/packages/modules/pgr",
-    "micro-ui-internals/packages/modules/pt",
-    "micro-ui-internals/packages/modules/tl",
-    "micro-ui-internals/packages/modules/fsm",
-    "micro-ui-internals/packages/modules/ws"
+    "micro-ui-internals/packages/modules/hrms",
+    "micro-ui-internals/packages/modules/pt"
+
   ],
   "engines": {
     "node": ">=14"
@@ -63,6 +61,7 @@
     "**/babel-loader": "8.2.2",
     "**/@babel/core": "7.14.0",
     "**/@babel/preset-env": "7.14.0",
+    "**/styled-components": "5.0.0",
     "**/@babel/plugin-transform-modules-commonjs": "7.14.0"
   },
   "scripts": {
