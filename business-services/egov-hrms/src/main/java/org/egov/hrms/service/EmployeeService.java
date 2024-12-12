@@ -131,7 +131,7 @@ public class EmployeeService {
 	}
 	
 	private void enrichOfficeMapping(Employee employee) {
-		employee.getOffice().setUserId(employee.getId());
+		employee.getOffice().setUserId(employee.getUser().getId());
 		employee.getOffice().setActive(true);
 		
 		/* If Sub NAA user then his parent NAA user preserve or set to null*/
