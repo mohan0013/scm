@@ -12,7 +12,10 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Component;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Component
+@Slf4j
 public class OfficeResultExtractor  implements ResultSetExtractor<List<Office>> {
 
 	@Override
@@ -21,16 +24,17 @@ public class OfficeResultExtractor  implements ResultSetExtractor<List<Office>> 
 		Map<String, Office> officeMap = new LinkedHashMap<>();
 		while (rs.next()) {
 			String code=rs.getString("code");
+			log.info("Code: "+code);
 			Office office = Office.builder().id(rs.getLong("id")).code(rs.getString("code")).organizationId(rs.getLong("organization_id"))
 					.name(rs.getString("name")).description(rs.getString("description"))
 					.emailId(rs.getString("email_id")).telephoneNumber(rs.getString("telephone_number"))
 					.officeAddress(rs.getString("office_address")).district(rs.getString("district")).subDistrict(rs.getString("sub_district"))
 					.state(rs.getString("state")).pin(rs.getString("pin")).status(rs.getString("status"))
 					.HeadOfficeCode(rs.getString("Head_office_code")).headOffice(rs.getBoolean("Head_office")).build();
-			
+			log.info("office: "+office.toString());
 			officeMap.put(code, office);
 		}
-		 
+		
 		return new ArrayList<>(officeMap.values());
 	}
 }
