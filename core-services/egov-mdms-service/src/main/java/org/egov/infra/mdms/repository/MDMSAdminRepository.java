@@ -92,10 +92,13 @@ public class MDMSAdminRepository {
 			paramList.add(criteria.getOrganizationId());
 		}
 		
-		searchQuery.append(addWhereOrAndClause(paramList));
-		searchQuery.append(" head_office = ?");
-		paramList.add(criteria.isHeadOffice());
+		if(criteria!= null && !ObjectUtils.isEmpty(criteria.getHeadOffice())) {
+			searchQuery.append(addWhereOrAndClause(paramList));
+			searchQuery.append(" head_office = ?");
+			paramList.add(criteria.getHeadOffice());
+		}
 		
+		log.info("Office search query: "+searchQuery.toString());
 		List<Office> offices = jdbcTemplate.query(searchQuery.toString(), paramList.toArray(), officeResultExtractor);
 		
 		return offices;

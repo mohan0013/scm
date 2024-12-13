@@ -28,5 +28,5 @@ public class OfficeSearchCriteria {
 	private List<String> codes;
 	private String HeadOfficeCode;
 	private String status;
-	private boolean headOffice;
+	private Boolean headOffice;
 }
