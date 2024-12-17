@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModel;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.egov.pgr.annotation.CharacterConstraint;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
@@ -40,6 +41,10 @@ public class Workflow   {
         @SafeHtml
         @JsonProperty("comments")
         private String comments = null;
+        
+        @CharacterConstraint(size = 3600)
+        @JsonProperty("additionalDetail")
+        private Object additionalDetail = null;
 
         @JsonProperty("verificationDocuments")
         @Valid

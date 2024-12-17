@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.egov.common.contract.request.User;
+import org.egov.wf.annotation.CharacterConstraint;
 import org.springframework.validation.annotation.Validated;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -108,6 +109,11 @@ public class ProcessInstance   {
 
         @JsonProperty("escalated")
         private Boolean escalated = false;
+        
+
+        @CharacterConstraint(size = 3600)
+        @JsonProperty("additionalDetail")
+        private Object additionalDetail = null;
 
 
         public ProcessInstance addDocumentsItem(Document documentsItem) {

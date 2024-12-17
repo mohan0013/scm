@@ -186,6 +186,7 @@ public class WorkflowService {
         processInstance.setBusinessService(getBusinessService(request).getBusinessService());
         processInstance.setDocuments(request.getWorkflow().getVerificationDocuments());
         processInstance.setComment(workflow.getComments());
+        processInstance.setAdditionalDetail(workflow.getAdditionalDetail());
 
         if(!CollectionUtils.isEmpty(workflow.getAssignes())){
             List<User> users = new ArrayList<>();
