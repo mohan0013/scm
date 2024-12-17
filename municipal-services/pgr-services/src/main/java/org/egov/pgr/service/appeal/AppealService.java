@@ -57,6 +57,8 @@ public class AppealService {
 		validator.validateCreateAppealRequest(request);
 
 		enrichmentService.enrichCreateRequest(request);
+		
+		assignRequestToRandomEmployee(request);
 
 		workflowService.updateWorkflowStatus(request);
 
@@ -125,10 +127,12 @@ public class AppealService {
 
 				log.info("@Method: assignRequestToRandomEmployee, probable nextAssignees: " + nextAssignees);
 
-				String assigneeKey = util.getRandomValue(nextAssignees);
+				if (!CollectionUtils.isEmpty(nextAssignees)) {
+					String assigneeKey = util.getRandomValue(nextAssignees);
 
-				log.info("@Method: assignRequestToRandomEmployee, : final Assignee " + assigneeKey);
-				appeal.getWorkflow().setAssignes(Arrays.asList(assigneeKey));
+					log.info("@Method: assignRequestToRandomEmployee, : final Assignee " + assigneeKey);
+					appeal.getWorkflow().setAssignes(Arrays.asList(assigneeKey));
+				}
 			}
 		}
 	}
