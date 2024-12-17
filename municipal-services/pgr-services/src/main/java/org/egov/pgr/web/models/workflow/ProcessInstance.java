@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.egov.pgr.annotation.CharacterConstraint;
 import org.egov.pgr.web.models.AuditDetails;
 import org.egov.pgr.web.models.Document;
 import org.egov.common.contract.request.User;
@@ -91,6 +92,11 @@ public class ProcessInstance {
 
     @JsonProperty("businesssServiceSla")
     private Long businesssServiceSla = null;
+    
+
+    @CharacterConstraint(size = 3600)
+    @JsonProperty("additionalDetail")
+    private Object additionalDetail = null;
 
     public ProcessInstance addDocumentsItem(Document documentsItem) {
         if (this.documents == null) {
