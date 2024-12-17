@@ -92,26 +92,26 @@ public class EmployeeValidator {
 				boundarytList.add(employee.getTenantId());
 		}
 
-		List<MdmsResponse> boundaryResponseList = new ArrayList<>();
-		for(String boundary: boundarytList){
-			MdmsResponse responseLoc = mdmsService.fetchMDMSDataLoc(requestInfo, boundary);
-			if(!CollectionUtils.isEmpty(responseLoc.getMdmsRes()))
-				boundaryResponseList.add(responseLoc);
-		}
-
-		if(!CollectionUtils.isEmpty(boundaryResponseList)){
-			List<String> tenantBoundaryData = new ArrayList<>();
-			for(MdmsResponse responseLoc : boundaryResponseList){
-				if(!CollectionUtils.isEmpty(responseLoc.getMdmsRes().keySet())) {
-					if(null != responseLoc.getMdmsRes().get(HRMSConstants.HRMS_MDMS_EGOV_LOCATION_MASTERS_CODE)) {
-						eachMasterMap = (Map) responseLoc.getMdmsRes().get(HRMSConstants.HRMS_MDMS_EGOV_LOCATION_MASTERS_CODE);
-						tenantBoundaryData.addAll(eachMasterMap.get(HRMSConstants.HRMS_MDMS_TENANT_BOUNDARY_CODE));
-					}
-				}
-			}
-			if(!CollectionUtils.isEmpty(tenantBoundaryData))
-				masterData.put(HRMSConstants.HRMS_MDMS_TENANT_BOUNDARY_CODE,tenantBoundaryData);
-		}
+//		List<MdmsResponse> boundaryResponseList = new ArrayList<>();
+//		for(String boundary: boundarytList){
+//			MdmsResponse responseLoc = mdmsService.fetchMDMSDataLoc(requestInfo, boundary);
+//			if(!CollectionUtils.isEmpty(responseLoc.getMdmsRes()))
+//				boundaryResponseList.add(responseLoc);
+//		}
+//
+//		if(!CollectionUtils.isEmpty(boundaryResponseList)){
+//			List<String> tenantBoundaryData = new ArrayList<>();
+//			for(MdmsResponse responseLoc : boundaryResponseList){
+//				if(!CollectionUtils.isEmpty(responseLoc.getMdmsRes().keySet())) {
+//					if(null != responseLoc.getMdmsRes().get(HRMSConstants.HRMS_MDMS_EGOV_LOCATION_MASTERS_CODE)) {
+//						eachMasterMap = (Map) responseLoc.getMdmsRes().get(HRMSConstants.HRMS_MDMS_EGOV_LOCATION_MASTERS_CODE);
+//						tenantBoundaryData.addAll(eachMasterMap.get(HRMSConstants.HRMS_MDMS_TENANT_BOUNDARY_CODE));
+//					}
+//				}
+//			}
+//			if(!CollectionUtils.isEmpty(tenantBoundaryData))
+//				masterData.put(HRMSConstants.HRMS_MDMS_TENANT_BOUNDARY_CODE,tenantBoundaryData);
+//		}
 		return masterData;
 	}
 	
@@ -250,7 +250,7 @@ public class EmployeeValidator {
 		validateEmployee(employee, errorMap, mdmsData);
 		validateAssignments(employee, errorMap, mdmsData);
 		validateServiceHistory(employee, errorMap, mdmsData);
-		validateJurisdicton(employee, errorMap, mdmsData, boundaryMap);
+//		validateJurisdicton(employee, errorMap, mdmsData, boundaryMap);
 		validateEducationalDetails(employee, errorMap, mdmsData);
 		validateDepartmentalTest(employee, errorMap, mdmsData);
 	}

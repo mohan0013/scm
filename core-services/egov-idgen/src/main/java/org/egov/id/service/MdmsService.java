@@ -149,7 +149,8 @@ public class MdmsService {
                 DocumentContext documentContext = JsonPath
                         .parse(mdmsResponse.getMdmsRes().get(tenantModule).get(tenantMaster).get(0));
 
-                cityCodeFromMdms = documentContext.read("$.city.code");
+//                cityCodeFromMdms = documentContext.read("$.city.code");
+                cityCodeFromMdms = documentContext.read("$.code");
                 log.debug("Found city code as - " + cityCodeFromMdms);
             }
             if (mdmsResponse.getMdmsRes() != null && mdmsResponse.getMdmsRes().containsKey(formatModule)

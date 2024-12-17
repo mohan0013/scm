@@ -85,9 +85,11 @@ public class MDMSService {
 	public MdmsResponse fetchMDMSData(RequestInfo requestInfo, String tenantId) {
 		StringBuilder uri = new StringBuilder();
 		MdmsCriteriaReq request = prepareMDMSRequest(uri, requestInfo, tenantId);
+		log.info("MDMS Request: "+request.toString());
 		MdmsResponse response = null;
 		try {
 			response = restTemplate.postForObject(uri.toString(), request, MdmsResponse.class);
+			log.info("MDMS Response: "+response.toString());
 		}catch(Exception e) {
 			log.info("Exception while fetching from MDMS: ",e);
 			log.info("Request: "+ request);

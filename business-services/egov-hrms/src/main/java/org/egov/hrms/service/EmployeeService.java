@@ -49,6 +49,7 @@ import org.egov.common.contract.response.ResponseInfo;
 import org.egov.hrms.config.PropertiesManager;
 import org.egov.hrms.model.AuditDetails;
 import org.egov.hrms.model.Employee;
+import org.egov.hrms.model.Office;
 import org.egov.hrms.model.enums.UserType;
 import org.egov.hrms.producer.HRMSProducer;
 import org.egov.hrms.repository.EmployeeRepository;
@@ -120,6 +121,7 @@ public class EmployeeService {
 		employeeRequest.getEmployees().stream().forEach(employee -> {
 			enrichCreateRequest(employee, requestInfo);
 			createUser(employee, requestInfo);
+			enrichOfficeMapping(employee);
 			pwdMap.put(employee.getUuid(), employee.getUser().getPassword());
 			employee.getUser().setPassword(null);
 		});
@@ -128,6 +130,16 @@ public class EmployeeService {
 		return generateResponse(employeeRequest);
 	}
 	
+	private void enrichOfficeMapping(Employee employee) {
+		employee.getOffice().setUserId(employee.getUser().getId());
+		employee.getOffice().setActive(true);
+		
+		/* If Sub NAA user then his parent NAA user preserve or set to null*/
+		if(!employee.getUser().getRoles().stream().anyMatch(role -> role.getCode().equals(HRMSConstants.ROLE_SUB_NODAL_APELLATE_AUTHORITY))) {
+			employee.getOffice().setNaaUserId(null);
+		}
+	}
+
 	/**
 	 * Searches employees on a given criteria.
 	 * 
@@ -318,8 +330,11 @@ public class EmployeeService {
 				document.setAuditDetails(auditDetails);
 			});
 		}
+			
 		employee.setAuditDetails(auditDetails);
 		employee.setIsActive(true);
+		
+		employee.setOffice(Office.builder().naaUserId(requestInfo.getUserInfo().getId()).auditDetails(auditDetails).build());
 	}
 	
 	/**

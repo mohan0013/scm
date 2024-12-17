@@ -1,15 +1,20 @@
 package org.egov.user.repository.rowmapper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
+import org.egov.tracer.model.CustomException;
 import org.egov.user.domain.model.Address;
 import org.egov.user.domain.model.Role;
 import org.egov.user.domain.model.User;
 import org.egov.user.domain.model.enums.*;
+import org.postgresql.util.PGobject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
@@ -52,6 +57,7 @@ public class UserResultSetExtractor implements ResultSetExtractor<List<User>> {
                         .accountLocked(rs.getBoolean("accountlocked")).photo(rs.getString("photo"))
                         .identificationMark(rs.getString("identificationmark")).uuid(rs.getString("uuid"))
                         .accountLockedDate(rs.getLong("accountlockeddate")).alternateMobileNumber(rs.getString("alternatemobilenumber"))
+                        .officeCode(rs.getString("office_id")).naaUserId(rs.getLong("naa_user_id"))
                         .build();
 
                 for (UserType type : UserType.values()) {
@@ -81,6 +87,20 @@ public class UserResultSetExtractor implements ResultSetExtractor<List<User>> {
                         user.setGuardianRelation(guardianRelation);
                     }
                 }
+                
+                PGobject pgObj = (PGobject) rs.getObject("additionaldetails");
+                ObjectNode additionalDetails = null;
+                if (pgObj != null) {
+
+        			try {
+        				additionalDetails = objectMapper.readValue(pgObj.getValue(), ObjectNode.class);
+        			} catch (IOException ex) {
+        				throw new CustomException("PARSING ERROR", "The additionalDetail json cannot be parsed");
+        			}
+        		} else {
+        			additionalDetails = objectMapper.createObjectNode();
+        		}
+                user.setAdditionalDetails(additionalDetails);
 
                 usersMap.put(userId, user);
 
@@ -134,6 +154,20 @@ public class UserResultSetExtractor implements ResultSetExtractor<List<User>> {
             user.setPermanentAddress(address);
         if (address.getType().equals(CORRESPONDENCE) && isNull(user.getCorrespondenceAddress()))
             user.setCorrespondenceAddress(address);
+        
+        PGobject pgObj = (PGobject) rs.getObject("addrAdditionaldetails");
+        ObjectNode additionalDetails = null;
+        if (pgObj != null) {
+
+			try {
+				additionalDetails = objectMapper.readValue(pgObj.getValue(), ObjectNode.class);
+			} catch (IOException ex) {
+				throw new CustomException("PARSING ERROR", "The additionalDetail json cannot be parsed");
+			}
+		} else {
+			additionalDetails = objectMapper.createObjectNode();
+		}
+        address.setAdditionalDetails(additionalDetails);
 
         return address;
 
